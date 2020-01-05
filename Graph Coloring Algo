@@ -1,0 +1,104 @@
+#include<iostream>
+using namespace std;
+
+#define graphLength 6
+
+int color[graphLength];
+
+bool graph[6][6] =
+	{
+	    {0, 1, 0, 1, 1, 0},
+		{1, 0, 1, 0, 1 ,0},
+		{0, 1, 0, 0, 0, 1},
+		{1, 0, 0, 0, 1, 0},
+		{1, 1, 0, 1, 1, 1},
+		{0, 0, 1, 0, 1, 0},
+	};
+
+
+bool checkNode(int node, int colorVlaue)
+{
+	for (int i = 0; i < graphLength; i++)
+		if (graph[node][i] && colorVlaue == color[i])
+			return false;
+	return true;
+}
+
+bool assignColor(int number, int node)
+{
+	if (node == graphLength)
+		return true;
+
+	for (int colorVlaue = 1; colorVlaue <= number; colorVlaue++)
+	{
+
+		if (checkNode(node, colorVlaue))
+		{
+            color[node] = colorVlaue;
+
+            if (assignColor (number, node+1) == true)
+                return true;
+
+            color[node] = 0;
+		}
+	}
+	return false;
+}
+
+
+int main()
+{
+
+	cout<<"Given graph :\n\n";
+
+	for(int i=0; i<6; i++)
+    {
+        for(int j=0; j<=6; j++)
+        {
+            if(i==0 && j==0)
+                cout<<"  ";
+            else if(i==0)
+                cout<<" "<<j-1;
+        }
+        cout<<"\n";
+
+        if(i==0)
+        {
+            for(int j=0; j<14; j++)
+            {
+                cout<<"-";
+            }
+        }
+
+        cout<<"\n"<<i<<"|";
+
+        for(int j=0; j<6; j++)
+        {
+            cout<<" "<<graph[i][j];
+        }
+
+
+    }
+cout<<"\n\n";
+
+    cout<<"Please Enter color number : ";
+	int number;
+
+	cin>>number;
+
+    for (int i = 0; i < graphLength; i++) //Initializes colors
+        color[i] = 0;
+
+	if (assignColor(number, 0) == false)
+	{
+        cout<<"\nSolution does not exist"<<endl;;
+        return 0;
+	}
+
+    cout<<("\nSolution Exists: Vertices colors are : \n");
+
+	for (int i = 0; i < graphLength; i++)
+	cout<<color[i]<<" ";
+
+    cout<<"\n";
+}
